@@ -1,0 +1,21 @@
+{
+	"luci-mod-system-openssh": {
+		"description": "Grant access to OpenSSH configuration",
+		"read": {
+			"file": {
+				"/usr/libexec/luci-openssh read": [ "exec" ]
+			},
+			"ubus": {
+				"file": [ "exec" ]
+			}
+		},
+		"write": {
+			"file": {
+				"/usr/libexec/luci-openssh save *": [ "exec" ]
+			},
+			"ubus": {
+				"file": [ "exec" ]
+			}
+		}
+	}
+}

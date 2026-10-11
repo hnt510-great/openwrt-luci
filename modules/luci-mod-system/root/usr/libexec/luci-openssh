@@ -1,0 +1,87 @@
+#!/bin/sh
+
+case "$1" in
+read)
+	[ "$#" -eq 1 ] || exit 1
+	exec /usr/sbin/sshd -T -C user=root,host=localhost,addr=127.0.0.1
+	;;
+save)
+	[ "$#" -eq 6 ] || exit 1
+	;;
+*) exit 1 ;;
+esac
+
+port=$2
+password=$3
+pubkey=$4
+rootlogin=$5
+gateway=$6
+case "$port" in ''|*[!0-9]*) echo 'Invalid SSH port' >&2; exit 1 ;; esac
+[ "$port" -ge 1 ] && [ "$port" -le 65535 ] || exit 1
+case "$password" in yes|no) ;; *) exit 1 ;; esac
+case "$pubkey" in yes|no) ;; *) exit 1 ;; esac
+case "$rootlogin" in yes|prohibit-password|no) ;; *) exit 1 ;; esac
+case "$gateway" in yes|no|clientspecified) ;; *) exit 1 ;; esac
+
+# Keep at least one root authentication method available.
+if [ "$rootlogin" = no ] || { [ "$pubkey" = no ] && { [ "$password" = no ] || [ "$rootlogin" != yes ]; }; }; then
+	echo 'At least one root SSH authentication method must remain enabled' >&2
+	exit 1
+fi
+if { [ "$password" = no ] || [ "$rootlogin" != yes ]; } &&
+	[ ! -s /root/.ssh/authorized_keys ] && [ ! -s /etc/dropbear/authorized_keys ]; then
+	echo 'Add an SSH public key before disabling root password login' >&2
+	exit 1
+fi
+
+config=/etc/ssh/sshd_config.d/00-openwrt-access.conf
+[ -f "$config" ] || { echo 'OpenSSH access configuration is missing' >&2; exit 1; }
+umask 077
+exec 9>/var/lock/luci-openssh.lock || exit 1
+flock -n 9 || { echo 'SSH configuration is being updated' >&2; exit 1; }
+
+new=$config.luci-new
+backup=$config.luci-backup
+replaced=0
+cleanup() {
+	if [ "$replaced" = 1 ]; then
+		mv "$backup" "$config" || return 1
+	fi
+	rm -f "$new" "$backup"
+}
+trap cleanup 0
+trap 'exit 1' 1 2 3 15
+
+# This file contains global options; preserve comments and unmanaged settings.
+awk -v port="$port" -v password="$password" -v pubkey="$pubkey" \
+	-v rootlogin="$rootlogin" -v gateway="$gateway" '
+BEGIN {
+	print "Port " port
+	print "PasswordAuthentication " password
+	print "PubkeyAuthentication " pubkey
+	print "PermitRootLogin " rootlogin
+	print "GatewayPorts " gateway
+	print "AuthenticationMethods any"
+	print "PermitEmptyPasswords no"
+	print "KbdInteractiveAuthentication no"
+}
+tolower($1) == "match" { exit 1 }
+tolower($1) ~ /^(port|passwordauthentication|pubkeyauthentication|permitrootlogin|gatewayports|authenticationmethods|permitemptypasswords|kbdinteractiveauthentication)$/ { next }
+{ print }
+' "$config" > "$new" || { echo 'Unsupported conditional SSH access configuration' >&2; exit 1; }
+
+mv "$config" "$backup" || exit 1
+replaced=1
+mv "$new" "$config" || exit 1
+
+# Check the complete effective configuration before signalling the daemon.
+/usr/sbin/sshd -t || exit 1
+if ! /etc/init.d/sshd reload; then
+	mv "$backup" "$config" || exit 1
+	replaced=0
+	/etc/init.d/sshd reload
+	echo 'Unable to reload OpenSSH; original configuration restored' >&2
+	exit 1
+fi
+replaced=0
+exit 0

@@ -16560,3 +16560,43 @@ msgstr "… 及另外 %d 个。"
 
 #~ msgid "Set Static"
 #~ msgstr "设为静态"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "OpenSSH offers SSH access and SFTP file transfers."
+msgstr "OpenSSH 提供 SSH 远程访问和 SFTP 文件传输服务。"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "OpenSSH Server"
+msgstr "OpenSSH 服务器"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Public key authentication"
+msgstr "公钥认证"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Root login"
+msgstr "root 登录方式"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Password or public key"
+msgstr "密码或公钥"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Public key only"
+msgstr "仅公钥"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Specified by the SSH client"
+msgstr "由 SSH 客户端指定"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Unable to read SSH configuration."
+msgstr "无法读取 SSH 配置。"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "Unable to save SSH configuration."
+msgstr "无法保存 SSH 配置。"
+
+#: modules/luci-mod-system/htdocs/luci-static/resources/view/system/openssh.js
+msgid "SSH settings have been saved and applied."
+msgstr "SSH 设置已保存并应用。"
