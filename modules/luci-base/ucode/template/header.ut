@@ -19,6 +19,8 @@
 		dispatchpath   : ctx.path,
 		pollinterval   : +config.main.pollinterval || 5,
 		ubuspath       : config.main.ubuspath || '/ubus/',
+		base_url       : resource,
+		resource_version: version.luciversion + '-' + pkgs_update_time,
 		sessionid      : ctx.authsession,
 		token          : ctx.authtoken,
 		nodespec       : dispatched,
