@@ -2106,6 +2106,14 @@ msgstr ""
 msgid "CNAME or fqdn"
 msgstr ""
 
+#: modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js:259
+msgid "CPU Frequency"
+msgstr ""
+
+#: modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js:256
+msgid "CPU Temperature"
+msgstr ""
+
 #: modules/luci-mod-status/htdocs/luci-static/resources/view/status/processes.js:68
 msgid "CPU usage (%)"
 msgstr ""

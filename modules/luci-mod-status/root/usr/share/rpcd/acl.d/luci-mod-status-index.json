@@ -4,8 +4,24 @@
 		"read": {
 			"file": {
 				"/etc/board.json": [ "read" ],
+				"/proc/cpuinfo": [ "read" ],
 				"/proc/sys/net/netfilter/nf_conntrack_count": [ "read" ],
 				"/proc/sys/net/netfilter/nf_conntrack_max": [ "read" ],
+				"/sys/class/hwmon": [ "list" ],
+				"/sys/class/hwmon/hwmon*/name": [ "read" ],
+				"/sys/class/hwmon/hwmon*/temp*_input": [ "read" ],
+				"/sys/class/thermal": [ "list" ],
+				"/sys/class/thermal/thermal_zone*/temp": [ "read" ],
+				"/sys/class/thermal/thermal_zone*/type": [ "read" ],
+				"/sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq": [ "read" ],
+				"/sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq": [ "read" ],
+				"/sys/devices/system/cpu/online": [ "read" ],
+				"/sys/devices/virtual/hwmon": [ "list" ],
+				"/sys/devices/*/hwmon/hwmon*/name": [ "read" ],
+				"/sys/devices/*/hwmon/hwmon*/temp*_input": [ "read" ],
+				"/sys/devices/virtual/thermal": [ "list" ],
+				"/sys/devices/*/thermal_zone*/temp": [ "read" ],
+				"/sys/devices/*/thermal_zone*/type": [ "read" ],
 				"/www/luci-static/resources/view/status/include": [ "list" ]
 			},
 			"ubus": {

@@ -2184,6 +2184,14 @@ msgstr "CNAME"
 msgid "CNAME or fqdn"
 msgstr "CNAME 或 fqdn"
 
+#: modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js:259
+msgid "CPU Frequency"
+msgstr "CPU 频率"
+
+#: modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js:256
+msgid "CPU Temperature"
+msgstr "CPU 温度"
+
 #: modules/luci-mod-status/htdocs/luci-static/resources/view/status/processes.js:68
 msgid "CPU usage (%)"
 msgstr "CPU 使用率（%）"
