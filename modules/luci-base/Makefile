@@ -7,6 +7,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-base
+# Keep the feed revision while making native module rebuilds upgradeable.
+PKG_VERSION=$(PKG_SRC_VERSION)
+PKG_RELEASE:=2
 PKG_BUILD_FLAGS:=no-lto
 
 LUCI_TYPE:=mod
@@ -20,6 +23,7 @@ LUCI_DEPENDS:=\
 	+rpcd-mod-ucode \
 	+cgi-io \
 	+ucode \
+	+libucode \
 	+ucode-mod-fs \
 	+ucode-mod-log \
 	+ucode-mod-uci \
