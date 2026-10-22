@@ -1,6 +1,29 @@
 #!/bin/sh
 
+native_sshd() {
+	[ -d /run/systemd/system ] && [ -f /usr/lib/systemd/system/sshd.service ]
+}
+
+reload_sshd() {
+	if native_sshd; then
+		local state
+		state=$(systemctl show -p ActiveState --value sshd.service) || return 1
+		case "$state" in
+			active|reloading) systemctl reload sshd.service ;;
+			inactive|failed) return 0 ;;
+			*) echo 'OpenSSH is changing state; retry after it settles' >&2; return 1 ;;
+		esac
+	else
+		/etc/init.d/sshd reload
+	fi
+}
+
 case "$1" in
+backend)
+	[ "$#" -eq 1 ] || exit 1
+	if native_sshd; then echo systemd; else echo procd; fi
+	exit 0
+	;;
 read)
 	[ "$#" -eq 1 ] || exit 1
 	exec /usr/sbin/sshd -T -C user=root,host=localhost,addr=127.0.0.1
@@ -76,10 +99,10 @@ mv "$new" "$config" || exit 1
 
 # Check the complete effective configuration before signalling the daemon.
 /usr/sbin/sshd -t || exit 1
-if ! /etc/init.d/sshd reload; then
+if ! reload_sshd; then
 	mv "$backup" "$config" || exit 1
 	replaced=0
-	/etc/init.d/sshd reload
+	reload_sshd
 	echo 'Unable to reload OpenSSH; original configuration restored' >&2
 	exit 1
 fi

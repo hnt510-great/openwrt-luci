@@ -93,10 +93,11 @@
 		"description": "Grant access to startup configuration",
 		"read": {
 			"file": {
-				"/etc/rc.local": [ "read" ]
+				"/etc/rc.local": [ "read" ],
+				"/usr/libexec/luci-openssh backend": [ "exec" ]
 			},
 			"ubus": {
-				"file": [ "read" ],
+				"file": [ "read", "exec" ],
 				"rc": [ "list" ]
 			}
 		},

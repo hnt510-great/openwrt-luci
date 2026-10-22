@@ -22,7 +22,8 @@ return view.extend({
 	load: function() {
 		return Promise.all([
 			L.resolveDefault(fs.read('/etc/rc.local'), ''),
-			this.callRcList()
+			this.callRcList(),
+			L.resolveDefault(fs.exec('/usr/libexec/luci-openssh', [ 'backend' ]), {})
 		]);
 	},
 
@@ -68,6 +69,7 @@ return view.extend({
 	render: function(data) {
 		var rcLocal = data[0],
 		    initList = data[1],
+		    nativeSsh = (data[2].code === 0 && data[2].stdout.trim() === 'systemd'),
 		    rows = [], list = [];
 
 		var table = E('table', { 'class': 'table' }, [
@@ -79,7 +81,7 @@ return view.extend({
 		]);
 
 		for (var init in initList)
-			if (initList[init].start < 100)
+			if (initList[init].start < 100 && !(nativeSsh && init === 'sshd'))
 				list.push(Object.assign({ name: init }, initList[init]));
 
 		list.sort(function(a, b) {
@@ -110,6 +112,7 @@ return view.extend({
 			E('div', {}, [
 				E('div', { 'class': 'cbi-section', 'data-tab': 'init', 'data-tab-title': _('Initscripts') }, [
 					E('p', {}, _('You can enable or disable installed init scripts here. Changes will be applied after a device reboot.<br /><strong>Warning: If you disable essential init scripts like "network", your device might become inaccessible!</strong>')),
+					nativeSsh ? E('p', {}, _('OpenSSH is managed by sshd.service. Use systemctl to start, stop, restart, enable, or disable it. The recovery boot has separate SSH startup settings.')) : null,
 					table
 				]),
 				E('div', { 'class': 'cbi-section', 'data-tab': 'rc', 'data-tab-title': _('Local Startup') }, [
