@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ucode-mod-html
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_LICENSE:=ISC
 PKG_MAINTAINER:=Jo-Philipp Wich <jo@mein.io>
 

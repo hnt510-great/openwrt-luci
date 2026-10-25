@@ -32,3 +32,7 @@ install: compile
 
 	mkdir -p $(DESTDIR)/usr/share/ucode/luci
 	cp version.uc $(DESTDIR)/usr/share/ucode/luci/version.uc
+
+	# ubusd rejects group-writable ACL files; do not inherit checkout modes.
+	mkdir -p $(DESTDIR)/usr/share/acl.d
+	install -m 0644 ../root/usr/share/acl.d/luci-base.json $(DESTDIR)/usr/share/acl.d/luci-base.json
