@@ -274,6 +274,18 @@ msgstr ""
 msgid "Drop invalid packets"
 msgstr ""
 
+#: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js:73
+msgid "Enable full cone NAT"
+msgstr ""
+
+#: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js:74
+msgid ""
+"Endpoint-independent mapping and filtering (NAT1) for IPv4 UDP in zones with "
+"masquerading. Once a LAN host has sent from a UDP port, any remote host can "
+"reach it through that port. Requires a kernel with full cone support; "
+"otherwise ordinary masquerading is used."
+msgstr ""
+
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/forwards.js:230
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/rules.js:225
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/snats.js:209

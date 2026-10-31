@@ -68,6 +68,15 @@ return view.extend({
 			popt.value('ACCEPT', _('accept'));
 		}
 
+		/* Broadcom-style full cone masquerading, firewall4 "fullcone 2" */
+		if (fw4) {
+			o = s.option(form.Flag, 'fullcone', _('Enable full cone NAT'),
+				_('Endpoint-independent mapping and filtering (NAT1) for IPv4 UDP in zones with masquerading. Once a LAN host has sent from a UDP port, any remote host can reach it through that port. Requires a kernel with full cone support; otherwise ordinary masquerading is used.'));
+			o.enabled = '2';
+			o.disabled = '0';
+			o.default = o.disabled;
+		}
+
 		/* Netfilter flow offload support */
 
 		if (L.hasSystemFeature('offloading')) {

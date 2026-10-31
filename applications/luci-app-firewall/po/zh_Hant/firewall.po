@@ -315,6 +315,18 @@ msgstr "允許轉送連線追蹤狀態無效的流量。對於複雜的不對稱
 msgid "Drop invalid packets"
 msgstr "丟棄無效封包"
 
+#: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js:73
+msgid "Enable full cone NAT"
+msgstr "啟用全錐形 NAT"
+
+#: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/zones.js:74
+msgid ""
+"Endpoint-independent mapping and filtering (NAT1) for IPv4 UDP in zones with "
+"masquerading. Once a LAN host has sent from a UDP port, any remote host can "
+"reach it through that port. Requires a kernel with full cone support; "
+"otherwise ordinary masquerading is used."
+msgstr "為啟用了 IP 動態偽裝的區域中的 IPv4 UDP 提供端點無關的映射和過濾（NAT1）。區域網路主機從某個 UDP 連接埠發出資料後，任何遠端主機都可以透過該連接埠存取它。需要支援全錐形 NAT 的核心，否則使用一般 IP 動態偽裝。"
+
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/forwards.js:230
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/rules.js:225
 #: applications/luci-app-firewall/htdocs/luci-static/resources/view/firewall/snats.js:209
