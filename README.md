@@ -1,5 +1,7 @@
 # OpenWrt LuCI feed
 
+**简体中文** | [English](README.en.md)
+
 本仓库是 [hnt510-great/openwrt](https://github.com/hnt510-great/openwrt) 定制主树使用的私有源码 feed。
 项目面向 x86_64/glibc、APK、原生 systemd 和 GNOME 桌面；软件选择以主树
 保存的完整配置为准。
