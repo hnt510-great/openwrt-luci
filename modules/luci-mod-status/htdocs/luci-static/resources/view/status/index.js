@@ -56,10 +56,48 @@ return view.extend({
 		return has_load ? Promise.all(tasks) : Promise.resolve(null);
 	},
 
+	/*
+	 * Update the children of container to content, replacing only the
+	 * top-level nodes whose rendered markup differs. Rebuilding identical
+	 * markup on every poll recreates <img> elements, which browsers briefly
+	 * paint blank while the new image decodes, so unchanged icons visibly
+	 * flicker. Comparing per top-level node keeps e.g. the wireless radio
+	 * boxes in place while the station list, whose widgets carry unique
+	 * data-idref values, is rebuilt.
+	 */
+	updateContent: function(container, content) {
+		var scratch = E('div'), bin = E('div'), changed = false;
+
+		dom.content(scratch, content);
+
+		var next = Array.prototype.slice.call(scratch.childNodes),
+		    prev = Array.prototype.slice.call(container.childNodes);
+
+		if (next.length != prev.length) {
+			dom.content(container, next);
+			return true;
+		}
+
+		for (var i = 0; i < next.length; i++) {
+			if (next[i].isEqualNode(prev[i]))
+				continue;
+
+			container.replaceChild(next[i], prev[i]);
+			bin.appendChild(prev[i]);
+			changed = true;
+		}
+
+		/* release dom.data registry entries of replaced and discarded nodes */
+		dom.content(bin, null);
+		dom.content(scratch, null);
+
+		return changed;
+	},
+
 	poll_status: function(includes, containers, first_load) {
 		return network.flushCache().then(L.bind(
 			this.invokeIncludesLoad, this, includes, first_load
-		)).then(function(results) {
+		)).then(L.bind(function(results) {
 			for (var i = 0; i < includes.length; i++) {
 				var content = null;
 
@@ -84,7 +122,7 @@ return view.extend({
 					containers[i].parentNode.classList.add('fade-in');
 
 					if (!includes[i].hide)
-						dom.content(containers[i], content);
+						this.updateContent(containers[i], content);
 				}
 			}
 
@@ -93,7 +131,7 @@ return view.extend({
 				ssi.style.display = '';
 				ssi.classList.add('fade-in');
 			}
-		});
+		}, this));
 	},
 
 	load: function() {
