@@ -165,17 +165,15 @@
 	},
 
 	"luci-mod-system-flash": {
-		"description": "Grant access to flash operations",
+		"description": "Grant access to configuration backup and restore",
 		"read": {
 			"cgi-io": [ "backup", "download" ],
 			"file": {
 				"/dev/mtdblock[0-9]*": [ "read" ],
 				"/etc/sysupgrade.conf": [ "read" ],
-				"/lib/upgrade/platform.sh": [ "list" ],
 				"/proc/mounts": [ "read" ],
 				"/proc/*/mounts": [ "read" ],
 				"/proc/mtd": [ "read" ],
-				"/proc/partitions": [ "read" ],
 				"/proc/sys/kernel/hostname": [ "read" ],
 				"/sbin/sysupgrade --list-backup": [ "exec" ]
 			},
@@ -190,24 +188,11 @@
 				"/etc/sysupgrade.conf": [ "write" ],
 				"/sbin/firstboot -r -y": [ "exec" ],
 				"/sbin/reboot": [ "exec" ],
-				"/sbin/sysupgrade --force /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade -n --force /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade --force -k /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade --force -u /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade --force -u -k /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade -n /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade -k /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade -u /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade -u -k /tmp/firmware.bin": [ "exec" ],
 				"/sbin/sysupgrade --restore-backup /tmp/backup.tar.gz": [ "exec" ],
-				"/sbin/sysupgrade --test /tmp/firmware.bin": [ "exec" ],
-				"/sbin/sysupgrade /tmp/firmware.bin": [ "exec" ],
-				"/tmp/backup.tar.gz": [ "write" ],
-				"/tmp/firmware.bin": [ "write" ]
+				"/tmp/backup.tar.gz": [ "write" ]
 			},
 			"ubus": {
-				"file": [ "exec", "remove", "write" ],
-				"system": [ "validate_firmware_image" ]
+				"file": [ "exec", "remove", "write" ]
 			}
 		}
 	},

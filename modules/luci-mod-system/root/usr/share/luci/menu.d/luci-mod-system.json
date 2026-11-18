@@ -176,7 +176,7 @@
 	},
 
 	"admin/system/flash": {
-		"title": "Backup / Flash Firmware",
+		"title": "Backup / Restore",
 		"order": 70,
 		"action": {
 			"type": "view",
